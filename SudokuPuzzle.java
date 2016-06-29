@@ -14,6 +14,7 @@ class SudokuPuzzle {
 		puzzle = new int[PUZZLE_DIM * PUZZLE_DIM];
 	}
 	
+	// Create Puzzle from 2D Input Array
 	public SudokuPuzzle(int[][] inputArray) {
 		puzzle = new int[PUZZLE_DIM * PUZZLE_DIM];
 		
@@ -25,22 +26,27 @@ class SudokuPuzzle {
 		
 	}
 	
+	// Create Puzzle from 1D Input Array
 	public SudokuPuzzle(int[] inputArray) {
 		puzzle = new int[PUZZLE_DIM * PUZZLE_DIM];
 	}
 	
+	// Get Value at (R,C) Coordinates
 	public int get2D(int row, int col) {
 		return puzzle[PUZZLE_DIM * row + col];
 	}
 	
+	// Check if (R, C) does not have a value
 	public boolean isEmpty(int row, int col) {
-		return get2D(row, col) == 0;
+		return get2D(row, col) == BLANK_NUM;
 	}
 	
-	public int get2DIndex(int row, int col) {
+	// Get 1D index using (R, C) Coordinates
+	private int get2DIndex(int row, int col) {
 		return PUZZLE_DIM * row + col;
 	}
 	
+	// Check if a row contains 1 through 9
 	public boolean isRowSolved(int row) {
 		int[] tempArray = new int[PUZZLE_DIM];
 		
@@ -51,6 +57,7 @@ class SudokuPuzzle {
 		return isSolvedArray(tempArray);
 	}
 	
+	// Code to check if a 1D array contains numbers from MIN_VALUE to MAX_VALUE
 	private boolean isSolvedArray(int[] inputArray) {
 		
 		int[] elementCountArray = new int[MAX_VALUE + 1];
@@ -66,6 +73,7 @@ class SudokuPuzzle {
 		return true;
 	}
 	
+	// Check if a Column contains all numbers
 	public boolean isColSolved(int col) {
 		int[] tempArray = new int[PUZZLE_DIM];
 		
@@ -76,10 +84,12 @@ class SudokuPuzzle {
 		return isSolvedArray(tempArray);
 	}
 	
-	public boolean isBlockSolved(int quad) {
+	// Check if a block of numbers is solved
+	public boolean isBlockSolved(int blockNum) {
 		return false;
 	}
 	
+	// Output 2D String representation of puzzle
 	public String toString() {
 		StringBuilder outputString = new StringBuilder();
 		for (int i = 0; i < PUZZLE_DIM; i++) {
@@ -91,6 +101,8 @@ class SudokuPuzzle {
 		}
 		return outputString.toString();
 	}
+	
+	// Unit Tests
 	public static void main (String[] args) throws java.lang.Exception {
 		
 		// from https://en.wikipedia.org/wiki/Sudoku
