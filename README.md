@@ -16,3 +16,4 @@ This project will include:
 ## Solving:
 1. https://en.wikipedia.org/wiki/Backtracking
 2. https://en.wikipedia.org/wiki/Sudoku_solving_algorithms
+3. https://see.stanford.edu/materials/icspacs106b/H19-RecBacktrackExamples.pdf (Recursive)
