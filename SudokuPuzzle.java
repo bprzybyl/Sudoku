@@ -8,6 +8,7 @@ class SudokuPuzzle {
     private final int BLANK_NUM = 0;
     private final int MIN_VALUE = 1;
     private final int MAX_VALUE = 9;
+    private final int BLOCK_DIM = 3;
     
     // Create Empty Puzzle
     public SudokuPuzzle() {
@@ -32,13 +33,13 @@ class SudokuPuzzle {
     }
     
     // Get Value at (R,C) Coordinates
-    public int get2D(int row, int col) {
+    public int getVal(int row, int col) {
         return puzzle[PUZZLE_DIM * row + col];
     }
     
     // Check if (R, C) does not have a value
     public boolean isEmpty(int row, int col) {
-        return get2D(row, col) == BLANK_NUM;
+        return getVal(row, col) == BLANK_NUM;
     }
     
     // Get 1D index using (R, C) Coordinates
@@ -51,8 +52,15 @@ class SudokuPuzzle {
         int[] tempArray = new int[PUZZLE_DIM];
         
         for (int i = 0; i < PUZZLE_DIM; i++) {
-            tempArray[i] = get2D(row, i);
+            tempArray[i] = getVal(row, i);
         }
+        
+        System.out.print("Testing:");
+        for(int i : tempArray) {
+            System.out.print(" " + i);
+        }
+        System.out.println("");        
+        
         
         return isSolvedArray(tempArray);
     }
@@ -78,15 +86,63 @@ class SudokuPuzzle {
         int[] tempArray = new int[PUZZLE_DIM];
         
         for (int i = 0; i < PUZZLE_DIM; i++) {
-            tempArray[i] = get2D(i, col);
+            tempArray[i] = getVal(i, col);
         }
         
+        System.out.print("Testing:");
+        for(int i : tempArray) {
+            System.out.print(" " + i);
+        }
+        System.out.println("");
+                               
         return isSolvedArray(tempArray);
     }
     
     // Check if a block of numbers is solved
-    public boolean isBlockSolved(int blockNum) {
-        return false;
+    public boolean isBlockSolved(int blockRow, int blockCol) {
+        int[] tempArray = new int[PUZZLE_DIM];
+        
+        int valRow;
+        int valCol;
+        
+        for (int i = 0; i < BLOCK_DIM; i++) {
+            for (int j = 0; j < BLOCK_DIM; j++) {
+                valRow = blockRow * BLOCK_DIM + i;
+                valCol = blockCol * BLOCK_DIM + j;
+                // convert RC to 1D Array
+                tempArray[BLOCK_DIM * i + j] = getVal(valRow, valCol);
+            }
+        }        
+        
+        
+        System.out.print("Testing:");
+        for(int i : tempArray) {
+            System.out.print(" " + i);
+        }
+        System.out.println("");        
+        
+        return isSolvedArray(tempArray);
+    }
+    
+    public boolean isSolved() {
+        for (int i = 0; i < PUZZLE_DIM; i++) {
+            if(!isRowSolved(i)) return false;
+        }
+
+        for (int i = 0; i < PUZZLE_DIM; i++) {
+            if(!isColSolved(i)) return false;
+        }        
+    
+        int blockCount = PUZZLE_DIM / BLOCK_DIM;
+        
+        for (int i = 0; i < blockCount; i++) {
+            for (int j = 0; j < blockCount; j++) {
+                if(!isBlockSolved(i, j)) return false;
+            }
+        }
+        
+        return true;
+        
     }
     
     // Output 2D String representation of puzzle
@@ -94,7 +150,7 @@ class SudokuPuzzle {
         StringBuilder outputString = new StringBuilder();
         for (int i = 0; i < PUZZLE_DIM; i++) {
             for (int j = 0; j < PUZZLE_DIM; j++) {
-                outputString.append(get2D(i,j) + " ");
+                outputString.append(getVal(i,j) + " ");
             }
             
             if (i != (PUZZLE_DIM - 1)) outputString.append('\n');
@@ -134,15 +190,19 @@ class SudokuPuzzle {
         SudokuPuzzle solvedSudoku = new SudokuPuzzle(solvedPuzzle);
         System.out.println("Solved Puzzle:");
         System.out.println(solvedSudoku);
-        System.out.println("Is row 0 Solved? " + solvedSudoku.isRowSolved(0));
-        System.out.println("Is col 0 Solved? " + solvedSudoku.isColSolved(0));
+        System.out.println("       Is row 0 Solved? " + solvedSudoku.isRowSolved(0));
+        System.out.println("       Is col 0 Solved? " + solvedSudoku.isColSolved(0));
+        System.out.println("Is top-left 3x3 Solved? " + solvedSudoku.isBlockSolved(0,0));
+        System.out.println("      Is puzzle Solved? " + solvedSudoku.isSolved());
         
         System.out.println("\n");
         
         SudokuPuzzle starterSudoku = new SudokuPuzzle(starterPuzzle);  
         System.out.println("Starter Puzzle:");
         System.out.println(starterSudoku);
-        System.out.println("Is row 0 Solved? " + starterSudoku.isRowSolved(0));
-        System.out.println("Is col 0 Solved? " + starterSudoku.isColSolved(0));
+        System.out.println("       Is row 0 Solved? " + starterSudoku.isRowSolved(0));
+        System.out.println("       Is col 0 Solved? " + starterSudoku.isColSolved(0));
+        System.out.println("Is top-left 3x3 Solved? " + starterSudoku.isBlockSolved(0,0));
+        System.out.println("      Is puzzle Solved? " + starterSudoku.isSolved());
     }
 }
